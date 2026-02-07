@@ -19,18 +19,6 @@ public class Room {
     public Room() {
     }
 
-    public Room(String number,
-                RoomType type,
-                int capacity,
-                BigDecimal pricePerNight,
-                RoomStatus status) {
-        this.number = number;
-        this.type = type;
-        this.capacity = capacity;
-        this.pricePerNight = pricePerNight;
-        this.status = status;
-    }
-
     public Long getId() {
         return id;
     }
@@ -76,10 +64,6 @@ public class Room {
     }
 
     public void setStatus(RoomStatus status) {
-        this.status = status;
-    }
-
-    public void changeStatus(RoomStatus status) {
         this.status = status;
     }
 }
