@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS rooms (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    number VARCHAR(50) NOT NULL,
+    type VARCHAR(50) NOT NULL,
+    capacity INT NOT NULL,
+    price_per_night DECIMAL(10, 2) NOT NULL,
+    status VARCHAR(50) NOT NULL
+);

@@ -1,0 +1,8 @@
+dev/spring/service/RoomService.class
+dev/spring/model/RoomStatus.class
+dev/spring/repository/RoomRepository.class
+dev/spring/service/ICrudService.class
+dev/spring/model/Room.class
+dev/spring/model/RoomType.class
+dev/spring/repository/RoomRepositoryJdbcImpl.class
+dev/spring/controller/RoomController.class
