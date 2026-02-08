@@ -9,9 +9,9 @@ public interface ICrudService<T> {
 
     T create(T t);
 
-    Optional<T> get(int id);
+    Optional<T> get(Long id);
 
-    void update(T t, int id);
+    void update(T t, Long id);
 
-    void delete(int id);
+    void delete(Long id);
 }
