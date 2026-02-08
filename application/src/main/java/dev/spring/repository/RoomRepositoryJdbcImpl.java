@@ -14,7 +14,7 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Repository("RoomRepositoryJdbcImpl")
 public class RoomRepositoryJdbcImpl implements RoomRepository {
 
     private final JdbcTemplate jdbcTemplate;

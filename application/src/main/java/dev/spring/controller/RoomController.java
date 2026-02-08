@@ -1,7 +1,8 @@
 package dev.spring.controller;
 
 import dev.spring.model.Room;
-import dev.spring.service.RoomService;
+import dev.spring.service.ICrudService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,11 +11,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/rooms")
-public class RoomController {
+public class RoomController implements RoomApi<Room> {
 
-    private final RoomService roomService;
+    private final ICrudService<Room> roomService;
 
-    public RoomController(RoomService roomService) {
+    public RoomController(@Qualifier("RoomService") ICrudService<Room> roomService) {
         this.roomService = roomService;
     }
 
@@ -24,7 +25,7 @@ public class RoomController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Room> get(@PathVariable int id) {
+    public ResponseEntity<Room> get(@PathVariable Long id) {
         return roomService.get(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -37,13 +38,13 @@ public class RoomController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable int id, @RequestBody Room room) {
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Room room) {
         roomService.update(room, id);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         roomService.delete(id);
         return ResponseEntity.noContent().build();
     }
