@@ -1,8 +1,8 @@
 #!/bin/bash
 
 PROFILE=${1:-dev}
-TOMCAT_HOME=/home/anderson/jboss/apache-tomcat-11.0.18
-PROJECT_DIR=/home/anderson/documentos-2/raw-spring-app
+TOMCAT_HOME=/home/${USER}/jboss/apache-tomcat-11.0.18
+PROJECT_DIR=/home/${USER}/documentos-2/raw-spring-app
 
 echo "===================================="
 echo "Building and Deploying with profile: $PROFILE"

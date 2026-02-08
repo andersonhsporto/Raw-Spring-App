@@ -10,4 +10,4 @@ echo "Starting Tomcat with Spring Profile: $SPRING_PROFILES_ACTIVE"
 echo "Database URL: $DB_URL"
 echo "===================================="
 
-/home/anderson/jboss/apache-tomcat-11.0.18/bin/catalina.sh run
+/home/${USER}/jboss/apache-tomcat-11.0.18/bin/catalina.sh run
