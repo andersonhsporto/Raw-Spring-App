@@ -8,7 +8,7 @@ echo "===================================="
 echo "Building and Deploying with profile: $PROFILE"
 echo "===================================="
 
-cd "$PROJECT_DIR"
+cd "$PROJECT_DIR" || exit
 
 echo "1. Building application..."
 mvn clean package -P$PROFILE -DskipTests
@@ -19,12 +19,12 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "2. Stopping Tomcat if running..."
-$TOMCAT_HOME/bin/shutdown.sh 2>/dev/null || true
+"$TOMCAT_HOME"/bin/shutdown.sh 2>/dev/null || true
 sleep 3
 
 echo "3. Cleaning old deployment..."
-rm -rf $TOMCAT_HOME/webapps/raw-spring-app-application
-rm -f $TOMCAT_HOME/webapps/raw-spring-app-application.war
+rm -rf "$TOMCAT_HOME"/webapps/raw-spring-app-application
+rm -f "$TOMCAT_HOME"/webapps/raw-spring-app-application.war
 
 echo "4. Deploying new WAR..."
 cp application/target/raw-spring-app-application.war $TOMCAT_HOME/webapps/
