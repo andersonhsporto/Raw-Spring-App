@@ -7,6 +7,15 @@ API REST desenvolvida com Spring Framework (sem Spring Boot), utilizando configu
 ```
 raw-spring-app/
 ├── pom.xml                     # POM parent
+├── deploy.sh                   # Script de deploy automatizado
+├── start-tomcat-dev.sh         # Script para iniciar Tomcat (dev)
+├── start-tomcat-prod.sh        # Script para iniciar Tomcat (prod)
+├── docker-compose.yaml         # Configuração Docker Compose
+├── Dockerfile                  # Multi-stage build Docker
+├── mysql/                      # Scripts SQL para inicialização
+│   ├── 01_schema.sql
+│   ├── 02_CreateRoom.sql
+│   └── ...
 ├── configuration/              # Módulo de configuração
 │   ├── pom.xml
 │   └── src/main/
@@ -24,10 +33,12 @@ raw-spring-app/
     └── src/main/
         ├── java/
         │   └── dev/spring/
+        │       ├── config/
         │       ├── controller/
-        │       ├── service/
+        │       ├── mapper/
+        │       ├── model/
         │       ├── repository/
-        │       └── model/
+        │       └── service/
         └── webapp/
             └── WEB-INF/
                 ├── web.xml
@@ -40,7 +51,7 @@ O projeto possui 2 profiles configurados:
 
 ### Profile: dev (padrão)
 - Banco de dados: MySQL (base de desenvolvimento)
-- URL: jdbc:mysql://localhost:3306/app_db_dev
+- URL: jdbc:mysql://localhost:3306/app_db
 - Usuário: app_user
 - Senha: app_pass
 
@@ -131,14 +142,6 @@ O projeto inclui scripts para inicializar o Tomcat com o profile correto:
 ./start-tomcat-prod.sh
 ```
 
-### Deploy via JVM Arguments:
-```bash
-java -Dspring.profiles.active=prod \
-     -DDB_URL=jdbc:mysql://... \
-     -DDB_USERNAME=user \
-     -DDB_PASSWORD=pass \
-     -jar tomcat-runner.jar application.war
-```
 
 ## Docker
 
@@ -168,9 +171,15 @@ docker-compose down
 
 ## Endpoints da API
 
-Base URL: `http://localhost:8080/raw-spring-app-application`
+A Base URL depende do método de deploy:
+- **Local (Tomcat/Maven):** `http://localhost:8080/raw-spring-app-application`
+- **Docker:** `http://localhost:8080/room_api`
 
-### Rooms API
+(Os exemplos abaixo utilizam a URL Local)
+
+### Rooms API (Queries/JDBC)
+
+Endpoints que utilizam implementação com queries SQL diretas via JDBC.
 
 - **GET** `/api/rooms` - Listar todos os quartos
 - **GET** `/api/rooms/{id}` - Obter quarto por ID
@@ -178,7 +187,7 @@ Base URL: `http://localhost:8080/raw-spring-app-application`
 - **PUT** `/api/rooms/{id}` - Atualizar quarto
 - **DELETE** `/api/rooms/{id}` - Deletar quarto
 
-### Exemplo de requisição POST:
+#### Exemplo (Queries/JDBC):
 ```bash
 curl -X POST http://localhost:8080/raw-spring-app-application/api/rooms \
   -H "Content-Type: application/json" \
@@ -191,13 +200,36 @@ curl -X POST http://localhost:8080/raw-spring-app-application/api/rooms \
   }'
 ```
 
+### Rooms API (Stored Procedures)
+
+Endpoints que utilizam implementação baseada em Stored Procedures no banco de dados.
+
+- **GET** `/api/rooms/stored-procedure` - Listar todos os quartos
+- **GET** `/api/rooms/stored-procedure/{id}` - Obter quarto por ID
+- **POST** `/api/rooms/stored-procedure` - Criar novo quarto
+- **PUT** `/api/rooms/stored-procedure/{id}` - Atualizar quarto
+- **DELETE** `/api/rooms/stored-procedure/{id}` - Deletar quarto
+
+#### Exemplo (Stored Procedures):
+```bash
+curl -X POST http://localhost:8080/raw-spring-app-application/api/rooms/stored-procedure \
+  -H "Content-Type: application/json" \
+  -d '{
+    "number": "202",
+    "type": "DOUBLE",
+    "capacity": 2,
+    "pricePerNight": 150.00,
+    "status": "AVAILABLE"
+  }'
+```
+
 ## Tecnologias Utilizadas
 
-- Spring Framework 6.0.11
+- Spring Framework 7.0.3
 - Spring MVC
 - Spring JDBC
 - Jackson 2.15.2 (JSON)
-- MySQL Connector (dev e prod)
+- MySQL Connector 9.3.0
 - Jakarta Servlet API 6.0
 - Maven 3.x
 
@@ -223,9 +255,21 @@ O Maven realiza resource filtering no arquivo `application.properties`, substitu
 
 ### Erro 404 ao acessar endpoints
 - Verifique o context path da aplicação
-- URL correta: `http://localhost:8080/room_api/api/rooms`
+- URL Local: `http://localhost:8080/raw-spring-app-application/api/rooms`
+- URL Docker: `http://localhost:8080/room_api/api/rooms`
 
 ### Erro de conexão com banco de dados
 - Certifique-se de que o MySQL está rodando e acessível
 - Verifique se os bancos app_db (prod) e app_db_dev (dev) existem
 - Verifique credenciais em `application.properties` ou variáveis de ambiente
+
+
+# TODO
+
+- [ ] Implementar autenticação e autorização (Spring Security)
+- [ ] Adicionar testes unitários e de integração
+- [ ] Configurar CI/CD para deploy automático
+- [ ] Implementar cache para melhorar performance
+- [ ] Adicionar container com a documentação da API (Apidog)
+- [ ] Refatorar código para melhor organização e manutenção
+- [ ] Implementar logging e monitoramento (Log4j)
