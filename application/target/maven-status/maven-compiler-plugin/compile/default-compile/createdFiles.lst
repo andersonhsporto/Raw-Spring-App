@@ -1,8 +1,14 @@
-dev/spring/service/RoomService.class
 dev/spring/model/RoomStatus.class
 dev/spring/repository/RoomRepository.class
+dev/spring/config/RoomStoredProcedureConfig.class
 dev/spring/service/ICrudService.class
 dev/spring/model/Room.class
 dev/spring/model/RoomType.class
-dev/spring/repository/RoomRepositoryJdbcImpl.class
+dev/spring/controller/RoomStoredProcedureController.class
+dev/spring/controller/RoomApi.class
+dev/spring/repository/RoomStoredProceduresImpl.class
 dev/spring/controller/RoomController.class
+dev/spring/service/RoomStoredProcedureService.class
+dev/spring/service/RoomService.class
+dev/spring/mapper/RoomRowMapper.class
+dev/spring/repository/RoomRepositoryJdbcImpl.class

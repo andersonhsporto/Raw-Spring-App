@@ -9,7 +9,7 @@
 
     <context:annotation-config/>
 
-    <context:component-scan base-package="dev.spring.service, dev.spring.repository"/>
+    <context:component-scan base-package="dev.spring.service, dev.spring.repository, dev.spring.config"/>
 
     <beans profile="dev,default">
         <import resource="database-dev.xml"/>
