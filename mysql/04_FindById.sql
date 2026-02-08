@@ -1,0 +1,8 @@
+DELIMITER //
+
+CREATE PROCEDURE FIND_ROOM_BY_ID(
+    IN p_id BIGINT
+)
+BEGIN
+SELECT * FROM rooms WHERE id = p_id;
+END //

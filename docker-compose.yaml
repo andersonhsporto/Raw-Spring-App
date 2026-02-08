@@ -13,7 +13,11 @@ services:
       TZ: America/Sao_Paulo
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./configuration/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./mysql/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./mysql/02_CreateRoom.sql:/docker-entrypoint-initdb.d/02_CreateRoom.sql
+      - ./mysql/03_DeleteById.sql:/docker-entrypoint-initdb.d/03_DeleteById.sql
+      - ./mysql/04_FindById.sql:/docker-entrypoint-initdb.d/04_FindById.sql
+      - ./mysql/05_UpdateRoom.sql:/docker-entrypoint-initdb.d/05_UpdateRoom.sql
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
